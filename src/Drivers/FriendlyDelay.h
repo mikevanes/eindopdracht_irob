@@ -5,14 +5,14 @@
 
 class FriendlyDelay{
 public:
-    signed long delayUS;
-    unsigned long TimeNow;
-
     FriendlyDelay(unsigned long delayUS);
 
     void SetDelay(unsigned long delayUS);
 
     bool CheckTime();
+private:
+    signed long delayUS;
+    unsigned long TimeNow;
 
 
 };
