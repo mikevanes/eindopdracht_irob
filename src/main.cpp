@@ -5,8 +5,7 @@ MotorDriver* md;
 
 void setup() {
 // write your initialization code here
-    md = new MotorDriver(Steps::FULL, 500);
-    md->SetupPins();
+    md = new MotorDriver(Steps::FULL, 500, 500);
 
     Serial.begin(9600);
 }
