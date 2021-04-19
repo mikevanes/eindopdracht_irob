@@ -4,7 +4,5 @@
 
 #pragma once
 
-#define WINDOW_SIZE 5
-#define MIN_VAL 265
-#define MAX_VAL 402
 #define MPU_ADDR 0x68
+#define WINDOW_SIZE 15

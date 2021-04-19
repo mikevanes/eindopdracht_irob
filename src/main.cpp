@@ -3,30 +3,64 @@
 #include <Defines/MotorDefines.h>
 
 #include <Drivers/AcceleroDriver.h>
+#include <Controller/PIDcontroller.h>
 
 MotorDriver* md;
 AcceleroDriver* ad;
+PIDcontroller* pidC;
+float elapsedTime, time, timePrev;
 
 void setup() {
 // write your initialization code here
-    md = new MotorDriver(Steps::FULL, MAX_RPM, MAX_RPM);
+    Serial.begin(115200);
+    md = new MotorDriver(Steps::HALF, MAX_RPM, MAX_RPM);
     ad = new AcceleroDriver();
-//    Serial.begin(115200);
+    pidC = new PIDcontroller();
+
+    if(!ad->SetupWire()){
+//        Serial.println("Program crashed whilst initialising Accelero driver");
+    }
+
+    time = millis();
+
+
+}
+
+void turnMotor(){
+    // write your code here
+//    md->TurnLeftMotor();
+    md->TurnRightMotor();
 }
 
 void loop() {
-//   Serial.println(ad->GetAngle());
-    if(ad->GetAngle() > 0){
-        md->SetDirection(LEFT_MOTOR_DIR, TURN_LEFT);
-        md->SetDirection(RIGHT_MOTOR_DIR, TURN_LEFT);
-    }else{
-        md->SetDirection(LEFT_MOTOR_DIR, TURN_RIGHT);
+    timePrev = time;
+    time = micros();
+    elapsedTime = (time - timePrev) / 1000000;
+
+    float angle = ad->GetAngle();
+//    Serial.println(angle, 5);
+
+    float pid = abs(pidC->GetPID(angle, elapsedTime));
+
+    Serial.println(pid);
+
+//
+    if(angle > 5){
+//        md->SetDirection(LEFT_MOTOR_DIR, TURN_RIGHT);
         md->SetDirection(RIGHT_MOTOR_DIR, TURN_RIGHT);
+
+//        md->SetLeftMotorSpeed(pid);
+        md->SetRightMotorSpeed(pid);
+
+        turnMotor();
+    }else if(angle < -5){
+//        md->SetDirection(LEFT_MOTOR_DIR, TURN_LEFT);
+        md->SetDirection(RIGHT_MOTOR_DIR, TURN_LEFT);
+
+//        md->SetLeftMotorSpeed(pid);
+        md->SetRightMotorSpeed(pid);
+
+        turnMotor();
     }
-    // write your code here
-    md->TurnLeftMotor();
-    md->TurnRightMotor();
 
-
-    //HALLO.
 }

@@ -47,7 +47,7 @@ void MotorDriver::SetLeftMotorSpeed(unsigned int RPM ){
     this->leftMotorRPM  = RPM;
 
     //RPM to US
-    unsigned long delay = 1000000 / ( this->leftMotorRPM / ( (this->stepMode/360) * 60) );
+    unsigned long delay = (RPM/60)*1000000;
 
     this->LeftMotorTimer->SetDelay(delay);
 }
@@ -55,7 +55,7 @@ void MotorDriver::SetRightMotorSpeed(unsigned int RPM ){
     this->rightMotorRPM  = RPM;
 
     //RPM to US
-    unsigned long delay = 1000000 / ( this->rightMotorRPM / ( (this->stepMode/360) * 60) );
+    unsigned long delay = (RPM/60)*1000000;
 
     this->RightMotorTimer->SetDelay(delay);
 }
@@ -77,7 +77,7 @@ void MotorDriver::SetStep(Steps step){
         case Steps::FULL:
             this->stepMode = 1.8;
 
-//            digitalWrite(LEFTMS1, LOW);
+            digitalWrite(LEFTMS1, LOW);
 //            digitalWrite(LEFTMS2, LOW);
 //            digitalWrite(LEFTMS3, LOW);
 //            digitalWrite(RIGHTMS1, LOW);
@@ -88,7 +88,7 @@ void MotorDriver::SetStep(Steps step){
         case Steps::HALF:
             this->stepMode = 0.9;
 
-//            digitalWrite(LEFTMS1, HIGH);
+            digitalWrite(LEFTMS1, HIGH);
 //            digitalWrite(LEFTMS2, LOW);
 //            digitalWrite(LEFTMS3, LOW);
 //            digitalWrite(RIGHTMS1, HIGH);

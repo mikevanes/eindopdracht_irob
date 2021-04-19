@@ -2,7 +2,7 @@
 // Created by Mike van Es on 12-4-2021.
 //
 
-#define LEFTMS1 1
+#define LEFTMS1 8
 #define LEFTMS2 2
 #define LEFTMS3 3
 
