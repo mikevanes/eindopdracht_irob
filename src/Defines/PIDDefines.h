@@ -5,6 +5,6 @@
 #pragma once
 
 #define KP 8
-#define KI 0.25
-#define KD 0
-#define DESIRED_ANGLE 0
+#define KI 5
+#define KD 0.005
+#define DESIRED_ANGLE -5
