@@ -17,28 +17,17 @@ PIDcontroller::PIDcontroller() {
 
 double PIDcontroller::GetPID(int currentAngle, float elapsedTime) {
     this->error = DESIRED_ANGLE - currentAngle;
+    double P = KP * this->error;
 
-    this->cumError = this->cumError + this->error;
-//    double P = KP * this->error;
+    this->cumError = this->cumError + this->error * elapsedTime;
     double I = KI * this->cumError;
 
-    if(I >= MAX_SPEED){
-        I = MAX_SPEED - MIN_SPEED;
-    }
-
-    if(I <= MAX_SPEED * -1){
-        I = (MAX_SPEED - MIN_SPEED) *-1;
-    }
-
-    if(currentAngle == 0){
-        this->cumError = 0;
-    }
-
     this->rateError = (this->error - this->prevError);
+    double D = KD * this->rateError;
 
     this->prevError = this->error;
 
-    double PID = KP * this->error + I + KD * this->rateError;
+    double PID = P + I + D;
 
     return PID;
 }
