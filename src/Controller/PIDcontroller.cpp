@@ -2,10 +2,8 @@
 // Created by Mike van Es on 15-4-2021.
 //
 
-#include <HardwareSerial.h>
 #include "PIDcontroller.h"
 #include "../Defines/PIDDefines.h"
-#include "../Defines/MotorDefines.h"
 #include <Arduino.h>
 
 PIDcontroller::PIDcontroller() {
