@@ -26,12 +26,6 @@ int AcceleroDriver::GetAngle() {
 
     xyzFloat angles = this->myMPU9250.getAngles();
 
-//    if( (angles.x - this->AVERAGED) > MAX_ERROR){
-//        angles.x = MAX_ERROR;
-//    }else if(angles.x - this->AVERAGED < MAX_ERROR * -1){
-//        angles.x = MAX_ERROR * -1;
-//    }
-
     this->SUM = this->SUM - this->READINGS[this->INDEX];
     this->READINGS[this->INDEX] = angles.x;
     this->SUM = this->SUM + angles.x;
@@ -57,17 +51,13 @@ bool AcceleroDriver::SetupWire() {
     Serial.println("Done!");
 
     myMPU9250.setSampleRateDivider(5);
-//    myMPU9250.setSampleRateDivider(99);
 
     myMPU9250.setAccRange(MPU9250_ACC_RANGE_2G);
-//    myMPU9250.setGyrRange(MPU9250_GYRO_RANGE_250);
 
     /*  Enable/disable the digital low pass filter for the accelerometer
      *  If disabled the bandwidth is 1.13 kHz, delay is 0.75 ms, output rate is 4 kHz
      */
     myMPU9250.enableAccDLPF(true);
-//    myMPU9250.enableGyrDLPF();
-
 
     /*  Digital low pass filter (DLPF) for the accelerometer, if enabled
      *  MPU9250_DPLF_0, MPU9250_DPLF_2, ...... MPU9250_DPLF_7
@@ -82,20 +72,18 @@ bool AcceleroDriver::SetupWire() {
      *     7           460               1.94           1
      */
     myMPU9250.setAccDLPF(MPU9250_DLPF_2);
-//    myMPU9250.setGyrDLPF(MPU9250_DLPF_0);
-
 
     return true;
 }
 
 void AcceleroDriver::SetInterrupt() {
-    // TIMER 1 for interrupt frequency 10000 Hz:
+    // TIMER 1 for interrupt frequency 1000 Hz:
     cli(); // stop interrupts
     TCCR1A = 0; // set entire TCCR1A register to 0
     TCCR1B = 0; // same for TCCR1B
     TCNT1  = 0; // initialize counter value to 0
-    // set compare match register for 10000 Hz increments
-    OCR1A = 1599; // = 16000000 / (1 * 10000) - 1 (must be <65536)
+    // set compare match register for 1000 Hz increments
+    OCR1A = 15999; // = 16000000 / (1 * 1000) - 1 (must be <65536)
     // turn on CTC mode
     TCCR1B |= (1 << WGM12);
     // Set CS12, CS11 and CS10 bits for 1 prescaler
